@@ -1,0 +1,46 @@
+<h1>Listing People</h1>
+ 
+<p>
+  Download:
+  <%= link_to "CSV", people_path(format: "csv") %>
+</p> 
+<table>
+  <tr>
+    <th>Person ID</th>
+    <th>Name</th>
+    <th>Phone No</th>
+    <th>Location ID</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
+  </tr>
+ 
+  <% @people.each do |person| %>
+    <tr>      
+      <% if person.locations.any? %>
+        <% person.locations.each do |location| %>
+          <td><%= person.id %></td>
+          <td><%= person.name %></td>
+          <td><%= person.phone %></td>
+          <td><%= location.id %></td>
+          <td><%= location.latitude %></td>
+          <td><%= location.longitude %></td>
+          </tr>
+        <% end %>
+      <% else %>
+        <td><%= person.id %></td>
+        <td><%= person.name %></td>
+        <td><%= person.phone %></td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+        </tr>
+      <% end %>
+  <% end %>
+</table>
+
+<h2>Import People</h2>
+
+<%= form_tag import_people_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Import" %> 
+<% end %>
